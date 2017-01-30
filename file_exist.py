@@ -1,10 +1,8 @@
 from os.path import isfile
 from os.path import isdir
-import subprocess
 import sys
-from filecmp import cmpfiles
 import tarfile
-
+import os
 
 sources = ["/u01/app/oracle/",
            "/home/oracle/",
@@ -23,37 +21,42 @@ sources = ["/u01/app/oracle/",
            "/etc/rc*.d/*ohasd*",
            "/etc/init/oracle-ohasd.conf",
            "/etc/systemd/system/oracle-ohasd.service"]
-destination = "/tmp/COPY/"
-rsync = "rsync"
-arguments = "-avz"
 
-def check_dirs(sources):
+def check_df(sources):
     if isdir(sources):
-        print("Ok :",sources )
+        return 1         
+    elif  isfile(sources):
+        return 1         
     else:
-        print("Directory  NOT exist :-(: ",sources)
+         print("Object NOT exist !!! ",sources) 
 
-def check_files(sources):
-    if isfile(sources):
-        print("Ok :",sources )
-    else:
-        print("File NOT exist :-(: ",sources)
+def glob_quest():
+    global path 
+    path = input('Where store backup files ? (for example: /tmp/backup ):')
+    log = open('/var/log/backup','w')
+    log.write(path)
 
-def bak_files(sources):
-    if isfile(sources):
-       subprocess.call(("%s %s %s %s " % (rsync, arguments, sources, destination)),shell=True)    
-for x in (sources):
-    check_dirs(x) and  check_files(x)
+question1 = input("Backup or extract files ?(B/E) :")
 
-question = input("Get are you backup oracle files?(Y/N) :")
-if  question == "Y" or "y" :
-    tar = tarfile.open("reinstall.tar","w")
+
+#question2 = input("Where store backup files ? :")
+#question3 = input("Recovery oracle files?(Y/N) :")
+
+
+if  question1 == "B":
+    glob_quest()
+    tar = tarfile.open(path,"w")
     for i in (sources):
-        print(i)
-        tar.add(i)
+        if check_df(i):        
+           tar.add(i)
     tar.close()
-elif question == "N" or "n":
-    print("See you later my friend") 
-
-   
-          
+    print(" Backup is success!!! ")  
+    
+elif  question1 == "E":
+     
+    file_list = tarfile.open(/var/log/backup)
+    file_list.extractall(path="/")
+    file_list.close()
+ 
+#a = glob_quest()
+print(path)          

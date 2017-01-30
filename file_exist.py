@@ -4,7 +4,8 @@ import sys
 import tarfile
 import os
 
-sources = ["/u01/app/oracle/",
+sources = ["/u01",
+#/u01/app/oracle/",#
            "/home/oracle/",
            "/etc/oracle/",
            "/etc/oratab",
@@ -20,43 +21,45 @@ sources = ["/u01/app/oracle/",
            "/etc/init.d/ohasd",
            "/etc/rc*.d/*ohasd*",
            "/etc/init/oracle-ohasd.conf",
-           "/etc/systemd/system/oracle-ohasd.service"]
+           "/etc/systemd/system/oracle-ohasd.service",
+           "/home/oracle/.ssh/",
+           "/home/oracle/.bashrc",
+           "/home/oracle/.bash_profile"]
 
 def check_df(sources):
     if isdir(sources):
-        return 1         
+        return 1
+        print()          
     elif  isfile(sources):
-        return 1         
+        return 1
+        print()         
     else:
-         print("Object NOT exist !!! ",sources) 
+        print("Object not exist!", sources)
+         
 
 def glob_quest():
     global path 
     path = input('Where store backup files ? (for example: /tmp/backup ):')
-    log = open('/var/log/backup','w')
-    log.write(path)
+   
 
-question1 = input("Backup or extract files ?(B/E) :")
+question1 = input("You want to create a backup ?(Y/N) :")
 
-
-#question2 = input("Where store backup files ? :")
-#question3 = input("Recovery oracle files?(Y/N) :")
-
-
-if  question1 == "B":
+if  question1 == "Y":
+    
     glob_quest()
     tar = tarfile.open(path,"w")
     for i in (sources):
-        if check_df(i):        
+        if check_df(i):
+           print(i)         
            tar.add(i)
     tar.close()
-    print(" Backup is success!!! ")  
-    
-elif  question1 == "E":
+    print(" Backup is success in :", path )  
+
+  
+else:
+    print("Good bye !!!")  
      
-    file_list = tarfile.open(/var/log/backup)
-    file_list.extractall(path="/")
-    file_list.close()
+   # file_list = tarfile.open(/var/log/backup)
+ #   file_list.extractall(path="/")
+ #   file_list.close()
  
-#a = glob_quest()
-print(path)          

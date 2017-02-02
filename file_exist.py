@@ -1,10 +1,14 @@
 from os.path import isfile
 from os.path import isdir
+#from subprocess import PIPE,Popen,STDOUT
 import sys
 import tarfile
 import os
+import subprocess
+import re 
 
-sources = ["/u01",
+
+sources = [#"/u01",
 #/u01/app/oracle/",#
            "/home/oracle/",
            "/etc/oracle/",
@@ -26,6 +30,15 @@ sources = ["/u01",
            "/home/oracle/.bashrc",
            "/home/oracle/.bash_profile"]
 
+
+
+list_files = open('/tmp/test_sp','r')
+for i in (list_files):
+      global symlink
+      symlink =re.split(' ',i)
+      print(symlink)
+
+'''
 def check_df(sources):
     if isdir(sources):
         return 1
@@ -35,25 +48,27 @@ def check_df(sources):
         print()         
     else:
         print("Object not exist!", sources)
-         
-
+'''
 def glob_quest():
     global path 
-    path = input('Where store backup files ? (for example: /tmp/backup ):')
+    path = raw_input('Where store backup files ? (for example: /tmp/backup ):')
    
+question1 = raw_input("You want to create  backup ?(Y/N) :")
+print(question1)
 
-question1 = input("You want to create a backup ?(Y/N) :")
-
-if  question1 == "Y":
+if question1 == "Y":
     
-    glob_quest()
-    tar = tarfile.open(path,"w")
-    for i in (sources):
-        if check_df(i):
-           print(i)         
-           tar.add(i)
-    tar.close()
-    print(" Backup is success in :", path )  
+   glob_quest()
+   tar = tarfile.open(path,"w")
+   #for i in (sources):
+   #   if check_df(i):
+   #      print(i)         
+   #      tar.add(i)
+   for x in (symlink):
+      # if check_df(x):
+          tar.add(x) 
+   tar.close()
+#   print(" Backup is success in :", path )  
 
   
 else:

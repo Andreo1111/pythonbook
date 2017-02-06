@@ -5,10 +5,10 @@ import tarfile
 
 question1 = raw_input("You want to create  backup ?(Y/N) :")
 
-sources_mask = glob.glob("/etc/rc*.d/*net*")
-print(sources_mask) 
-sources = ["/u01",
-#/u01/app/oracle/",#
+sources_mask = glob.glob("/etc/rc*.d/*ohasd*")
+sources_mask1 = glob.glob("/etc/rc*.d/*gcstartup*")
+sources_mask2 = ["/u01",
+          #"/u01/app/oracle/",
            "/home/oracle/",
            "/etc/oracle/",
            "/etc/oratab",
@@ -19,7 +19,7 @@ sources = ["/u01",
            "/etc/init.d/gcstartup",
            "/etc/init.d/lockgcstartup",
            "/etc/init.d/unlockgcstartup",
-           "/etc/rc*.d/*gcstartup*",
+          # "/etc/rc*.d/*gcstartup*",
            "/etc/init.d/init.ohasd",
            "/etc/init.d/ohasd",
           # "/etc/rc*.d/*ohasd*",
@@ -27,8 +27,9 @@ sources = ["/u01",
            "/etc/systemd/system/oracle-ohasd.service",
            "/home/oracle/.ssh/",
            "/home/oracle/.bashrc",
-           "/home/oracle/.bash_profile"]
-print(sources)
+           "/home/oracle/.bash_profile"
+           "/etc"]
+
 def check_df(sources):
     if isdir(sources):
         return 1
@@ -37,19 +38,23 @@ def check_df(sources):
         return 1
         print()
     else:
-        print("Object not exist!", sources)
+        print(" Error! Object not exist!", sources)
 
 
 if question1 == "Y":
     path = raw_input('Where store backup files ? (for example: /tmp/backup ):')
     tar = tarfile.open(path,"w")
-    for i in (sources):
+    for i in (sources_mask2):
         if check_df(i):
             tar.add(i)
     for i in (sources_mask):
-        tar.add(i)
+        if check_df(i):
+            tar.add(i)
+    for i in (sources_mask1):
+        if check_df(i):
+            tar.add(i) 
     tar.close()
-    print("Backup is success!!! in: ",path)
+    print "Backup is success!!! in: ",path
 else:
     print("Good bye!!!")
 

@@ -3,11 +3,12 @@ from os.path import isdir
 import glob
 import tarfile
 
-question1 = raw_input("You want to create  backup ?(Y/N) :")
+question1 = raw_input("You want to create  backup file(B)  or extract backup file(E)? (B/E) :")
 
 sources_mask = glob.glob("/etc/rc*.d/*ohasd*")
 sources_mask1 = glob.glob("/etc/rc*.d/*gcstartup*")
-sources_mask2 = ["/u01",
+sources_mask2 = [
+          #"/u01",
           #"/u01/app/oracle/",
            "/home/oracle/",
            "/etc/oracle/",
@@ -27,8 +28,7 @@ sources_mask2 = ["/u01",
            "/etc/systemd/system/oracle-ohasd.service",
            "/home/oracle/.ssh/",
            "/home/oracle/.bashrc",
-           "/home/oracle/.bash_profile"
-           "/etc"]
+           "/home/oracle/.bash_profile"]
 
 def check_df(sources):
     if isdir(sources):
@@ -41,8 +41,8 @@ def check_df(sources):
         print(" Error! Object not exist!", sources)
 
 
-if question1 == "Y":
-    path = raw_input('Where store backup files ? (for example: /tmp/backup ):')
+if question1 == "B":
+    path = raw_input('Where store backup files ? (for example: /tmp/backup.tar ):')
     tar = tarfile.open(path,"w")
     for i in (sources_mask2):
         if check_df(i):
@@ -55,6 +55,12 @@ if question1 == "Y":
             tar.add(i) 
     tar.close()
     print "Backup is success!!! in: ",path
+elif question1 == "E":
+    obj = raw_input('Please input name of backup file:' )
+    file_list = tarfile.open(obj)
+    file_list.extractall(path="/")
+    file_list.close() 
+    print("OK")
 else:
     print("Good bye!!!")
 

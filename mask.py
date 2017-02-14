@@ -1,5 +1,6 @@
 from os.path import isfile
 from os.path import isdir
+import os
 import glob
 import tarfile
 
@@ -8,7 +9,7 @@ question1 = raw_input("You want to create  backup file(B)  or extract backup fil
 sources_mask = glob.glob("/etc/rc*.d/*ohasd*")
 sources_mask1 = glob.glob("/etc/rc*.d/*gcstartup*")
 sources_mask2 = [
-           "/u01",
+          # "/u01",
           #"/u01/app/oracle/",
            "/home/oracle/",
            "/etc/oracle/",
@@ -60,6 +61,20 @@ elif question1 == "E":
     file_list = tarfile.open(obj)
     file_list.extractall(path="/")
     file_list.close() 
+    oracle_ohasd_service = open("/etc/systemd/system/oracle-ohasd.service","w")
+    oracle_ohasd_service.write(
+'''
+[Unit]
+Description=ohasd daemon
+
+[Service]
+ExecStart=/etc/init.d/init.ohasd run > /dev/null 2>&;1
+
+[Install]
+WantedBy=multi-user.targe
+'''
+)
+    oracle_ohasd_service.close()
     print("OK")
 else:
     print("Good bye!!!")

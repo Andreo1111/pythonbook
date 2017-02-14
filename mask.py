@@ -8,7 +8,7 @@ question1 = raw_input("You want to create  backup file(B)  or extract backup fil
 sources_mask = glob.glob("/etc/rc*.d/*ohasd*")
 sources_mask1 = glob.glob("/etc/rc*.d/*gcstartup*")
 sources_mask2 = [
-          #"/u01",
+           "/u01",
           #"/u01/app/oracle/",
            "/home/oracle/",
            "/etc/oracle/",
@@ -42,7 +42,7 @@ def check_df(sources):
 
 
 if question1 == "B":
-    path = raw_input('Where store backup files ? (for example: /tmp/backup.tar ):')
+    path = raw_input('Where store backup files ? (for example: /tmp/backup.tar ):').strip()
     tar = tarfile.open(path,"w")
     for i in (sources_mask2):
         if check_df(i):

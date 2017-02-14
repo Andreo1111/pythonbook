@@ -4,7 +4,7 @@ import os
 import glob
 import tarfile
 
-question1 = raw_input("You want to create  backup file(B)  or extract backup file(E)? (B/E) :")
+question1 = raw_input('\033[1;36mYou want to create  backup file(B)  or extract backup file(E)?:\033[0;m'"\033[1;31m(B/E)\033[0;m"'\033[1;36m:\033[0;m')
 
 sources_mask = glob.glob("/etc/rc*.d/*ohasd*")
 sources_mask1 = glob.glob("/etc/rc*.d/*gcstartup*")
@@ -43,7 +43,7 @@ def check_df(sources):
 
 
 if question1 == "B":
-    path = raw_input('Where store backup files ? (for example: /tmp/backup.tar ):').strip()
+    path = raw_input('\033[1;36mWhere store backup files ?\033[0;m' "\033[1;31m(for example: /tmp/backup.tar )\033[0;m" '\033[1;36m :\033[0;m').strip()
     tar = tarfile.open(path,"w")
     for i in (sources_mask2):
         if check_df(i):
@@ -55,9 +55,9 @@ if question1 == "B":
         if check_df(i):
             tar.add(i) 
     tar.close()
-    print "Backup is success!!! in: ",path
+    print'\033[1;36mBackup is success!!! in:\033[0;m',path
 elif question1 == "E":
-    obj = raw_input('Please input name of backup file:' )
+    obj = raw_input('\033[1;36mPlease input name of backup file:\033[0;m').strip()
     file_list = tarfile.open(obj)
     file_list.extractall(path="/")
     file_list.close() 

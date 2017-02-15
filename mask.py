@@ -1,3 +1,6 @@
+#Backup script for full reinstall  Oracle Linux 6.x to Oracle Linux 7.x 
+
+
 from os.path import isfile
 from os.path import isdir
 import os
@@ -6,11 +9,11 @@ import tarfile
 
 question1 = raw_input('\033[1;36mYou want to create  backup file(B)  or extract backup file(E)?:\033[0;m'"\033[1;31m(B/E)\033[0;m"'\033[1;36m:\033[0;m')
 
-sources_mask = glob.glob("/etc/rc*.d/*ohasd*")
-sources_mask1 = glob.glob("/etc/rc*.d/*gcstartup*")
+
+sources_mask = glob.glob("/etc/rc*.d/*ohasd*")            #simbolic links 
+sources_mask1 = glob.glob("/etc/rc*.d/*gcstartup*")       #simbolic links
 sources_mask2 = [
-          # "/u01",
-          #"/u01/app/oracle/",
+           "/u01",
            "/home/oracle/",
            "/etc/oracle/",
            "/etc/oratab",
@@ -21,15 +24,16 @@ sources_mask2 = [
            "/etc/init.d/gcstartup",
            "/etc/init.d/lockgcstartup",
            "/etc/init.d/unlockgcstartup",
-          # "/etc/rc*.d/*gcstartup*",
            "/etc/init.d/init.ohasd",
            "/etc/init.d/ohasd",
-          # "/etc/rc*.d/*ohasd*",
            "/etc/init/oracle-ohasd.conf",
            "/etc/systemd/system/oracle-ohasd.service",
            "/home/oracle/.ssh/",
            "/home/oracle/.bashrc",
-           "/home/oracle/.bash_profile"]
+           "/home/oracle/.bash_profile"]       # list backup files
+
+sources_mask4 = ["/etc/fstab","/root/.ssh/"]   # mount point and etc.  
+
 
 def check_df(sources):
     if isdir(sources):
@@ -44,6 +48,8 @@ def check_df(sources):
 
 if question1 == "B":
     path = raw_input('\033[1;36mWhere store backup files ?\033[0;m' "\033[1;31m(for example: /tmp/backup.tar )\033[0;m" '\033[1;36m :\033[0;m').strip()
+    path1 =  path + ".add" 
+    print path1
     tar = tarfile.open(path,"w")
     for i in (sources_mask2):
         if check_df(i):
@@ -56,8 +62,14 @@ if question1 == "B":
             tar.add(i) 
     tar.close()
     print'\033[1;36mBackup is success!!! in:\033[0;m',path
+    tar1 = tarfile.open(path1,"w")
+    for i in (sources_mask4):
+        if check_df(i):
+            tar1.add(i)  
+    tar1.close()
+
 elif question1 == "E":
-    obj = raw_input('\033[1;36mPlease input name of backup file:\033[0;m').strip()
+    obj = raw_input('\033[1;36mPlease input name of backup file:\033[0;m' "\033[1;31m(for example: /tmp/backup.tar )\033[0;m" '\033[1;36m :\033[0;m').strip()
     file_list = tarfile.open(obj)
     file_list.extractall(path="/")
     file_list.close() 

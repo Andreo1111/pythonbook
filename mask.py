@@ -7,8 +7,23 @@ import os
 import glob
 import tarfile
 
-question1 = raw_input('\033[1;36mYou want to create  backup file(B)  or extract backup file(E)?:\033[0;m'"\033[1;31m(B/E)\033[0;m"'\033[1;36m:\033[0;m')
 
+def space():
+    print('*'*80)
+
+def check_df(sources):
+    if isdir(sources):
+        return 1
+        print()
+    elif  isfile(sources):
+        return 1
+        print()
+    else:
+        print(" Error! Object not exist!", sources)
+
+space()
+question1 = raw_input('\033[1;36mYou want to create  backup file(B)  or extract backup file(E)?:\033[0;m'"\033[1;31m(B/E)\033[0;m"'\033[1;36m:\033[0;m')
+space()
 
 sources_mask = glob.glob("/etc/rc*.d/*ohasd*")            #simbolic links 
 sources_mask1 = glob.glob("/etc/rc*.d/*gcstartup*")       #simbolic links
@@ -34,22 +49,10 @@ sources_mask2 = [
 
 sources_mask4 = ["/etc/fstab","/root/.ssh/"]   # mount point and etc.  
 
-
-def check_df(sources):
-    if isdir(sources):
-        return 1
-        print()
-    elif  isfile(sources):
-        return 1
-        print()
-    else:
-        print(" Error! Object not exist!", sources)
-
-
 if question1 == "B":
     path = raw_input('\033[1;36mWhere store backup files ?\033[0;m' "\033[1;31m(for example: /tmp/backup.tar )\033[0;m" '\033[1;36m :\033[0;m').strip()
+    space()
     path1 =  path + ".add" 
-    print path1
     tar = tarfile.open(path,"w")
     for i in (sources_mask2):
         if check_df(i):
@@ -62,6 +65,7 @@ if question1 == "B":
             tar.add(i) 
     tar.close()
     print'\033[1;36mBackup is success!!! in:\033[0;m',path
+    space()
     tar1 = tarfile.open(path1,"w")
     for i in (sources_mask4):
         if check_df(i):

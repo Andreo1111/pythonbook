@@ -26,6 +26,7 @@ question1 = raw_input('\033[1;36mYou want to create  backup file(B)  or extract 
 space()
 
 sources_mask = glob.glob("/etc/rc*.d/*ohasd*")            #simbolic links 
+sources_mask = glob.glob("/etc/rc*.d/*net*")
 sources_mask1 = glob.glob("/etc/rc*.d/*gcstartup*")       #simbolic links
 sources_mask2 = [
            "/u01",

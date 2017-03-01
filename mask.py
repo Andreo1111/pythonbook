@@ -22,7 +22,7 @@ def check_df(sources):
         print(" Error! Object not exist!", sources)
 
 space()
-question1 = raw_input('\033[1;36mYou want to create  backup file(B)  or extract backup file(E)?:\033[0;m'"\033[1;31m(B/E)\033[0;m"'\033[1;36m:\033[0;m')
+question1 = raw_input('\033[1;36mYou want to create  backup file(B)  or extract backup file(E)?:\033[0;m\033[1;31m(B/E)\033[0;m\033[1;36m:\033[0;m')
 space()
 
 sources_mask = glob.glob("/etc/rc*.d/*ohasd*")            #simbolic links 

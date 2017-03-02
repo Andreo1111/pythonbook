@@ -1,5 +1,6 @@
 #Backup script for full reinstall  Oracle Linux 6.x to Oracle Linux 7.x 
-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 from os.path import isfile
 from os.path import isdir
@@ -26,7 +27,6 @@ question1 = raw_input('\033[1;36mYou want to create  backup file(B)  or extract 
 space()
 
 sources_mask = glob.glob("/etc/rc*.d/*ohasd*")            #simbolic links 
-sources_mask = glob.glob("/etc/rc*.d/*net*")
 sources_mask1 = glob.glob("/etc/rc*.d/*gcstartup*")       #simbolic links
 sources_mask2 = [
            "/u01",
@@ -44,11 +44,12 @@ sources_mask2 = [
            "/etc/init.d/ohasd",
            "/etc/init/oracle-ohasd.conf",
            "/etc/systemd/system/oracle-ohasd.service",
+           "/home/oracle/.crontab",                 #crontab  
            "/home/oracle/.ssh/",
            "/home/oracle/.bashrc",
            "/home/oracle/.bash_profile"]       # list backup files
 
-sources_mask4 = ["/etc/fstab","/root/.ssh/"]   # mount point and etc.  
+sources_mask4 = ["/etc/fstab","/root/.ssh/","/etc"]   # mount point and etc.  
 
 if question1 == "B":
     path = raw_input('\033[1;36mWhere store backup files ?\033[0;m' "\033[1;31m(for example: /tmp/backup.tar )\033[0;m" '\033[1;36m :\033[0;m').strip()

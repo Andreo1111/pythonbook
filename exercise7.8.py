@@ -15,15 +15,17 @@ from random import randint
 
 
 try:
+    count = 0
     rand = randint(1,1000)
     while True:
+        count +=1
         user_number = int(input("Please input number from 1 to 1000 : "))
         if user_number < rand:
             print("Higher")
             continue
         elif user_number == rand:
             print("You guessed it!")
-            exit()
+            exit(print(count))
         elif user_number > rand:
             print("Lower")
             continue

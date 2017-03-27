@@ -40,7 +40,12 @@ for i in a:
         proc2 = (subprocess.check_output('cat  /sys/class/net/'+i+'/operstate', shell=True)).splitlines()
         
         n +=1
-        tab_len ='{:^8d}{:^14s}{:^10s}{:^8s}'.format(n,i,proc1[0],proc2[0])
+        if int(proc1[0]) <=10000:
+            tab_len ='{:^8d}{:^14s}{:^10s}{:^8s}'.format(n,i,proc1[0],proc2[0])
+            
+        else:
+            proc1[0] = '0'  
+            tab_len ='{:^8d}{:^14s}{:^10s}{:^8s}'.format(n,i,proc1[0],proc2[0])   
         print tab_len        
         
          
